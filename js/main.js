@@ -44,27 +44,44 @@
     document.body.style.overflow = '';
   }
 
-  hamburger.addEventListener('click', function () {
-    if (navLinks.classList.contains('open')) {
-      closeMenu();
-    } else {
-      openMenu();
+  if (hamburger && navLinks) {
+    function toggleMenu(e) {
+      if (e) e.preventDefault();
+      if (navLinks.classList.contains('open')) {
+        closeMenu();
+      } else {
+        openMenu();
+      }
     }
-  });
 
-  // Close menu when overlay is clicked
-  overlay.addEventListener('click', closeMenu);
+    hamburger.addEventListener('click', toggleMenu);
+    hamburger.addEventListener('touchend', toggleMenu, { passive: false });
+
+    // Close menu when overlay is clicked
+    overlay.addEventListener('click', closeMenu);
+    overlay.addEventListener('touchend', function (e) {
+      e.preventDefault();
+      closeMenu();
+    }, { passive: false });
+  }
 
   // Close menu when a nav link is clicked
   navLinkItems.forEach(function (link) {
     link.addEventListener('click', function () {
-      closeMenu();
+      if (navLinks && navLinks.classList.contains('open')) {
+        closeMenu();
+      }
     });
+    link.addEventListener('touchend', function () {
+      if (navLinks && navLinks.classList.contains('open')) {
+        closeMenu();
+      }
+    }, { passive: true });
   });
 
   // Close menu on Escape key
   document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape' && navLinks.classList.contains('open')) {
+    if (e.key === 'Escape' && navLinks && navLinks.classList.contains('open')) {
       closeMenu();
       hamburger.focus();
     }
@@ -119,6 +136,7 @@
      Scroll-to-Top Button
      ========================================================== */
   function handleScrollTopVisibility() {
+    if (!scrollTopBtn) return;
     if (window.pageYOffset > 400) {
       scrollTopBtn.classList.add('visible');
     } else {
@@ -126,7 +144,7 @@
     }
   }
 
-  scrollTopBtn.addEventListener('click', function () {
+  if (scrollTopBtn) scrollTopBtn.addEventListener('click', function () {
     window.scrollTo({
       top: 0,
       behavior: 'smooth'
