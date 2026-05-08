@@ -54,8 +54,16 @@
       }
     }
 
-    hamburger.addEventListener('click', toggleMenu);
-    hamburger.addEventListener('touchend', toggleMenu, { passive: false });
+    var touchFired = false;
+    hamburger.addEventListener('touchend', function(e) {
+      touchFired = true;
+      toggleMenu(e);
+      setTimeout(function() { touchFired = false; }, 400);
+    }, { passive: false });
+    hamburger.addEventListener('click', function(e) {
+      if (touchFired) { e.preventDefault(); return; }
+      toggleMenu(e);
+    });
 
     // Close menu when overlay is clicked
     overlay.addEventListener('click', closeMenu);
