@@ -54,23 +54,16 @@
       }
     }
 
-    var touchFired = false;
-    hamburger.addEventListener('touchend', function(e) {
-      touchFired = true;
-      toggleMenu(e);
-      setTimeout(function() { touchFired = false; }, 400);
-    }, { passive: false });
-    hamburger.addEventListener('click', function(e) {
-      if (touchFired) { e.preventDefault(); return; }
-      toggleMenu(e);
+        hamburger.addEventListener('click', function(e) {
+        e.preventDefault();
+        toggleMenu(e);
     });
 
-    // Close menu when overlay is clicked
-    overlay.addEventListener('click', closeMenu);
-    overlay.addEventListener('touchend', function (e) {
-      e.preventDefault();
-      closeMenu();
-    }, { passive: false });
+    // Close menu when overlay is clicked/tapped
+    overlay.addEventListener('click', function(e) {
+        e.preventDefault();
+        closeMenu();
+    });
   }
 
   // Close menu when a nav link is clicked
